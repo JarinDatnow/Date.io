@@ -8,13 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --pink:#ff6f9c;
-    --deep:#e63e74;
-    --cream:#fff5f8;
-    --soft:#ffe1ec;
-    --ink:#5a2740;
-  }
+  :root{--pink:#ff6f9c;--deep:#e63e74;--cream:#fff5f8;--soft:#ffe1ec;--ink:#5a2740;}
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -23,86 +17,111 @@
       radial-gradient(circle at 20% 20%, #ffd9e6 0%, transparent 40%),
       radial-gradient(circle at 80% 70%, #ffe7c2 0%, transparent 45%),
       linear-gradient(135deg, #fff5f8 0%, #ffe1ec 100%);
-    color:var(--ink);
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow-x:hidden;
-    position:relative;
-    text-align:center;
-    padding:20px;
+    color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;
+    overflow-x:hidden;position:relative;text-align:center;padding:20px;
   }
-
   .heart-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
   .heart-bg span{position:absolute;bottom:-40px;font-size:24px;opacity:.5;animation:float linear infinite}
   @keyframes float{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
 
-  .screen{display:none;position:relative;z-index:2;width:100%;max-width:540px}
+  /* progress bar */
+  .progress-wrap{position:fixed;top:0;left:0;right:0;z-index:30;padding:14px 18px 0}
+  .progress-track{height:12px;background:rgba(255,255,255,.6);border-radius:50px;overflow:hidden;border:2px solid #fff;box-shadow:0 4px 12px rgba(230,62,116,.15)}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--deep));border-radius:50px;transition:width .8s cubic-bezier(.3,1.2,.4,1)}
+  .progress-label{font-size:12px;font-weight:700;color:var(--deep);margin-top:6px;text-align:right;opacity:0;transition:opacity .4s}
+
+  .screen{display:none;position:relative;z-index:2;width:100%;max-width:560px}
   .screen.active{display:block;animation:pop .6s cubic-bezier(.2,1.3,.4,1)}
   @keyframes pop{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 
-  .card{
-    background:rgba(255,255,255,.78);
-    backdrop-filter:blur(8px);
-    border:3px solid #fff;
-    border-radius:32px;
-    padding:44px 32px 52px;
-    box-shadow:0 24px 60px rgba(230,62,116,.25);
-  }
-
+  .card{background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border:3px solid #fff;border-radius:32px;padding:44px 32px 52px;box-shadow:0 24px 60px rgba(230,62,116,.25)}
   .emoji-top{font-size:64px;animation:beat 1.2s ease-in-out infinite}
   @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-
   h1{font-family:'Caveat',cursive;font-size:clamp(40px,8vw,66px);color:var(--deep);line-height:1.05;margin:10px 0 6px}
   .sub{font-size:17px;font-weight:600;color:var(--pink);margin-bottom:30px}
 
   .btns{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
-
   button{font-family:'Quicksand',sans-serif;font-weight:700;border:none;cursor:pointer;border-radius:50px;font-size:18px;transition:transform .15s ease, box-shadow .15s ease}
   .yes{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff;padding:16px 38px;box-shadow:0 10px 24px rgba(230,62,116,.45)}
   .yes:hover{transform:translateY(-3px) scale(1.04)}
   .no{background:#fff;color:var(--pink);border:2px solid var(--soft);padding:16px 30px}
 
-  /* date type grid */
-  .date-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:26px 0}
-  .date-opt{
-    background:#fff;border:2px solid var(--soft);border-radius:22px;
-    padding:22px 12px;cursor:pointer;transition:all .18s ease;
-    font-weight:700;font-size:16px;color:var(--ink);
-  }
+  /* loading bits */
+  .calc-line{font-size:16px;font-weight:600;color:var(--ink);margin:6px 0;opacity:0;animation:fadeUp .5s forwards}
+  @keyframes fadeUp{to{opacity:1}}
+  .bigpct{font-family:'Caveat',cursive;font-size:90px;color:var(--deep);line-height:1}
+  .loadbar{height:14px;background:var(--soft);border-radius:50px;overflow:hidden;margin:18px 0}
+  .loadbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--deep));border-radius:50px}
+
+  /* vibe grid */
+  .date-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}
+  .date-opt{background:#fff;border:2px solid var(--soft);border-radius:22px;padding:22px 12px;cursor:pointer;transition:all .18s ease;font-weight:700;font-size:16px;color:var(--ink)}
   .date-opt .ic{display:block;font-size:38px;margin-bottom:8px}
   .date-opt:hover{transform:translateY(-4px)}
   .date-opt.sel{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff;border-color:transparent;box-shadow:0 12px 26px rgba(230,62,116,.4)}
+  .reaction{min-height:48px;font-size:17px;font-weight:700;color:var(--deep);margin:4px 0 18px;display:flex;align-items:center;justify-content:center;padding:0 8px}
 
   /* calendar */
-  .cal{background:#fff;border-radius:22px;padding:18px;margin:22px 0;border:2px solid var(--soft)}
+  .cal{background:#fff;border-radius:22px;padding:18px;margin:18px 0;border:2px solid var(--soft)}
   .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:700;color:var(--deep)}
   .cal-head button{background:var(--soft);color:var(--deep);padding:6px 14px;font-size:16px;border-radius:12px}
   .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;font-weight:700;color:var(--pink);margin-bottom:6px}
   .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
   .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;transition:all .12s ease}
-  .day.empty{cursor:default}
-  .day.past{opacity:.25;cursor:not-allowed}
+  .day.empty{cursor:default}.day.past{opacity:.25;cursor:not-allowed}
   .day:not(.empty):not(.past):hover{background:var(--soft)}
   .day.sel{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff}
-
   .hint{font-size:14px;font-weight:600;color:var(--pink);min-height:20px;margin-bottom:8px}
 
-  .win p{font-size:19px;font-weight:600;margin-top:10px;line-height:1.5}
+  /* itinerary */
+  .itin{text-align:left;background:#fff;border-radius:22px;padding:8px 10px;margin:20px 0;border:2px solid var(--soft)}
+  .itin .row{display:flex;gap:14px;align-items:flex-start;padding:16px 12px;border-bottom:1px dashed var(--soft);opacity:0;transform:translateX(-10px);animation:slideIn .5s forwards}
+  .itin .row:last-child{border-bottom:none}
+  @keyframes slideIn{to{opacity:1;transform:translateX(0)}}
+  .itin .t{font-weight:700;color:var(--deep);font-size:14px;white-space:nowrap;min-width:64px}
+  .itin .d{font-weight:600;font-size:15px;color:var(--ink)}
+
   .recap{background:#fff;border-radius:20px;padding:20px;margin:20px 0;border:2px solid var(--soft);font-size:18px;font-weight:700;color:var(--ink)}
   .recap span{color:var(--deep)}
+  .win p{font-size:18px;font-weight:600;margin-top:10px;line-height:1.5}
+  .oneliner-box input{
+    width:100%;padding:14px 18px;border-radius:16px;border:2px solid var(--soft);
+    font-family:'Quicksand',sans-serif;font-size:16px;font-weight:600;color:var(--ink);
+    background:#fff;outline:none;transition:border .2s ease;text-align:center;
+  }
+  .oneliner-box input:focus{border-color:var(--pink)}
 </style>
 </head>
 <body>
   <div class="heart-bg" id="heartBg"></div>
 
-  <!-- SCREEN 1: the question -->
-  <div class="screen active" id="s1">
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+    <div class="progress-label" id="pLabel"></div>
+  </div>
+
+  <!-- SCREEN 0: compatibility intro -->
+  <div class="screen active" id="s0">
     <div class="card">
-      <div class="emoji-top">🥺</div>
-      <h1>Will you go<br>out with me?</h1>
-      <p class="sub" id="s1sub">no pressure but also... please 🌸</p>
+      <div class="emoji-top">💘</div>
+      <h1>Hold on...</h1>
+      <p class="sub">running the numbers real quick 🤓</p>
+      <div id="calcLines"></div>
+      <div class="loadbar"><i id="calcBar"></i></div>
+      <div id="calcResult" style="display:none">
+        <div class="bigpct" id="pctNum">0%</div>
+        <p class="sub" style="margin-top:8px">compatible. that missing 1%? that's you — you're the one I need 😏</p>
+        <button class="yes" id="introNext">whatever, continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: the question -->
+  <div class="screen" id="s1">
+    <div class="card">
+      <div class="emoji-top">😏</div>
+      <h1>Go out<br>with me.</h1>
+      <p class="sub" id="s1sub">not a question. but tap one anyway 🌹</p>
       <div class="btns">
         <button class="yes" id="yesBtn">Yes 💕</button>
         <button class="no" id="noBtn">No</button>
@@ -110,21 +129,22 @@
     </div>
   </div>
 
-  <!-- SCREEN 2: pick a date type -->
+  <!-- SCREEN 2: vibe -->
   <div class="screen" id="s2">
     <div class="card">
-      <div class="emoji-top">😎</div>
-      <h1>Knew it.</h1>
-      <p class="sub">okay okay — what's the vibe?</p>
+      <div class="emoji-top">🍷</div>
+      <h1>Obviously.</h1>
+      <p class="sub">now pick the vibe. I'll judge your choice (lovingly).</p>
       <div class="date-grid" id="typeGrid">
-        <div class="date-opt" data-t="Food 🍝"><span class="ic">🍝</span>Food</div>
-        <div class="date-opt" data-t="Movie 🍿"><span class="ic">🍿</span>Movie</div>
-        <div class="date-opt" data-t="Hiking 🥾"><span class="ic">🥾</span>Hiking</div>
-        <div class="date-opt" data-t="Coffee ☕"><span class="ic">☕</span>Coffee</div>
-        <div class="date-opt" data-t="Beach 🌊"><span class="ic">🌊</span>Beach</div>
-        <div class="date-opt" data-t="Surprise 🎁"><span class="ic">🎁</span>Surprise me</div>
+        <div class="date-opt" data-t="Food 🍝" data-ic="🍝"><span class="ic">🍝</span>Food</div>
+        <div class="date-opt" data-t="Movie 🍿" data-ic="🍿"><span class="ic">🍿</span>Movie</div>
+        <div class="date-opt" data-t="Hiking 🥾" data-ic="🥾"><span class="ic">🥾</span>Hiking</div>
+        <div class="date-opt" data-t="Coffee ☕" data-ic="☕"><span class="ic">☕</span>Coffee</div>
+        <div class="date-opt" data-t="Beach 🌊" data-ic="🌊"><span class="ic">🌊</span>Beach</div>
+        <div class="date-opt" data-t="Surprise 🎁" data-ic="🎁"><span class="ic">🎁</span>Surprise me</div>
       </div>
-      <button class="yes" id="toCal" style="opacity:.5;pointer-events:none">Pick a day →</button>
+      <div class="reaction" id="reaction"></div>
+      <button class="yes" id="toCal" style="opacity:.5;pointer-events:none">Lock the vibe →</button>
     </div>
   </div>
 
@@ -132,145 +152,214 @@
   <div class="screen" id="s3">
     <div class="card">
       <div class="emoji-top">📅</div>
-      <h1>When?</h1>
-      <p class="sub">tap a day. clear your schedule btw.</p>
+      <h1>When are<br>you free?</h1>
+      <p class="sub">clear your schedule, this is happening.</p>
       <div class="cal">
-        <div class="cal-head">
-          <button id="prevM">‹</button>
-          <span id="monthLbl"></span>
-          <button id="nextM">›</button>
-        </div>
+        <div class="cal-head"><button id="prevM">‹</button><span id="monthLbl"></span><button id="nextM">›</button></div>
         <div class="dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
         <div class="days" id="days"></div>
       </div>
       <p class="hint" id="calHint"></p>
-      <button class="yes" id="lockIn" style="opacity:.5;pointer-events:none">Lock it in 🔒</button>
+      <button class="yes" id="lockIn" style="opacity:.5;pointer-events:none">Build my itinerary 🗒️</button>
     </div>
   </div>
 
-  <!-- SCREEN 4: win -->
+  <!-- SCREEN 4: itinerary builder -->
   <div class="screen" id="s4">
+    <div class="card">
+      <div class="emoji-top">🗒️</div>
+      <h1>Drafting the<br>perfect day...</h1>
+      <p class="sub" id="itinSub">give me a sec, I'm a professional 😌</p>
+      <div class="itin" id="itin"></div>
+      <button class="yes" id="itinNext" style="display:none">It's official 🔒</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: win -->
+  <div class="screen" id="s5">
     <div class="card win">
       <div class="emoji-top">🎉</div>
-      <h1>It's a date!</h1>
+      <h1>It's a date.</h1>
       <div class="recap" id="recap"></div>
-      <p>screenshot this as proof. no take-backs 😌💍</p>
+      <p>screenshot this. it's legally binding now 😌💍</p>
+      <div class="oneliner-box">
+        <p class="sub" style="margin:22px 0 10px">last thing — drop your best one-liner 👇</p>
+        <input id="oneLiner" type="text" maxlength="140" placeholder="make me laugh, impress me..." />
+        <button class="yes" id="sendLine" style="margin-top:14px">Send it 🚀</button>
+        <p class="hint" id="lineThanks" style="margin-top:12px"></p>
+      </div>
     </div>
   </div>
 
 <script>
+  // placeholder anchor
   /* ===================================================================
-     👇 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES 👇
-     (looks like https://script.google.com/macros/s/AKfy..../exec)
-     Leave it as "" to just run offline with no saving.
+     👇 YOUR GOOGLE APPS SCRIPT WEB APP URL 👇
   ==================================================================== */
   const SAVE_URL = "https://script.google.com/macros/s/AKfycbzENvlIHE67RVnzqpGzEr9rv6EjUDTjh9gUO2CrURjiuJAbTbKVmWwQ9ROE0s4Qg8K2/exec";
   /* ==================================================================== */
 
+  /* ---- sound engine (Web Audio, no files) ---- */
+  let actx=null;
+  function ac(){if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return actx;}
+  function blip(freq=440,dur=0.08,type='sine',vol=0.12){
+    const a=ac();if(!a)return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(a.destination);
+    g.gain.setValueAtTime(vol,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
+    o.start();o.stop(a.currentTime+dur);
+  }
+  function ding(){blip(880,0.15,'sine',0.14);setTimeout(()=>blip(1320,0.25,'sine',0.12),90);}
+  function fanfare(){
+    const notes=[523,659,784,1047];
+    notes.forEach((f,i)=>setTimeout(()=>blip(f,0.3,'triangle',0.16),i*120));
+  }
+
   const hearts=['💖','💕','🌸','💗','✨','💘','🥰'];
   const bg=document.getElementById('heartBg');
-  for(let i=0;i<22;i++){
-    const s=document.createElement('span');
-    s.textContent=hearts[Math.floor(Math.random()*hearts.length)];
-    s.style.left=Math.random()*100+'%';
-    s.style.fontSize=(16+Math.random()*28)+'px';
-    s.style.animationDuration=(6+Math.random()*8)+'s';
-    s.style.animationDelay=(Math.random()*8)+'s';
-    bg.appendChild(s);
-  }
-  function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-  function burst(){for(let i=0;i<36;i++){const s=document.createElement('span');s.textContent=hearts[Math.floor(Math.random()*hearts.length)];s.style.position='fixed';s.style.left='50%';s.style.top='50%';s.style.fontSize=(20+Math.random()*30)+'px';s.style.zIndex=20;s.style.transition='all 1.4s ease-out';document.body.appendChild(s);requestAnimationFrame(()=>{s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.opacity=0;});setTimeout(()=>s.remove(),1500);}}
+  for(let i=0;i<22;i++){const s=document.createElement('span');s.textContent=hearts[Math.floor(Math.random()*hearts.length)];s.style.left=Math.random()*100+'%';s.style.fontSize=(16+Math.random()*28)+'px';s.style.animationDuration=(6+Math.random()*8)+'s';s.style.animationDelay=(Math.random()*8)+'s';bg.appendChild(s);}
 
-  /* ---- SCREEN 1: No that means yes ---- */
-  const noBtn=document.getElementById('noBtn');
-  const yesBtn=document.getElementById('yesBtn');
-  const s1sub=document.getElementById('s1sub');
-  const noLines=['No','are you sure? 👀','wrong button 🙃','that one also means yes','nice try 😏','it literally won\'t work','just press Yes 😭','okay this is awkward','😤 fine. that\'s a yes too'];
+  /* progress bar */
+  const pFill=document.getElementById('pFill'), pLabel=document.getElementById('pLabel');
+  const stages={s0:[10,"10% — warming up 🔥"],s1:[30,"30% — you said yes (you did)"],s2:[55,"55% — vibe locked 😎"],s3:[78,"78% — date scheduled 📅"],s4:[92,"92% — itinerary cooking 🍳"],s5:[100,"100% — it's a date 🎉"]};
+  function setProgress(id){const[v,l]=stages[id];pFill.style.width=v+'%';pLabel.textContent=l;pLabel.style.opacity=1;}
+
+  function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');setProgress(id);window.scrollTo(0,0);}
+  function burst(){for(let i=0;i<36;i++){const s=document.createElement('span');s.textContent=hearts[Math.floor(Math.random()*hearts.length)];s.style.position='fixed';s.style.left='50%';s.style.top='50%';s.style.fontSize=(20+Math.random()*30)+'px';s.style.zIndex=40;s.style.transition='all 1.4s ease-out';document.body.appendChild(s);requestAnimationFrame(()=>{s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.opacity=0;});setTimeout(()=>s.remove(),1500);}}
+
+  setProgress('s0');
+
+  /* ---- SCREEN 0: compatibility calc ---- */
+  const calcLines=document.getElementById('calcLines');
+  const lines=["scanning your vibe... ✅","cross-referencing my standards... ✅","checking if you're funny... barely ✅","calculating chemistry... 🧪","measuring how cute this is... off the charts 📈"];
+  let li=0;
+  const calcBar=document.getElementById('calcBar');
+  calcBar.style.transition='width 3s linear';
+  requestAnimationFrame(()=>calcBar.style.width='100%');
+  const lineTimer=setInterval(()=>{
+    if(li<lines.length){const p=document.createElement('div');p.className='calc-line';p.textContent=lines[li];calcLines.appendChild(p);li++;}
+    else{
+      clearInterval(lineTimer);
+      document.getElementById('calcResult').style.display='block';
+      let n=0;const pctNum=document.getElementById('pctNum');
+      const count=setInterval(()=>{n+=2;pctNum.textContent=n+'%';if(n>=99){pctNum.textContent='99%';clearInterval(count);ding();}},20);
+    }
+  },600);
+  document.getElementById('introNext').addEventListener('click',()=>{burst();show('s1');});
+
+  /* ---- SCREEN 1: rigged No ---- */
+  const noBtn=document.getElementById('noBtn'),yesBtn=document.getElementById('yesBtn'),s1sub=document.getElementById('s1sub');
+  const noLines=['No','wrong one 👀','that also means yes','nice try 😏','it physically won\'t work','just tap Yes 😭','I\'m more stubborn than you','😤 fine — that\'s a yes'];
   let n=0;
   function refuseNo(){
     n++;
-    yesBtn.style.transform=`scale(${1+Math.min(n,6)*0.14})`;
-    noBtn.textContent = noLines[Math.min(n,noLines.length-1)];
-    s1sub.textContent = n>=4 ? 'the No button is on my side btw 💅' : 'no pressure but also... please 🌸';
-    if(n>=noLines.length-1){ // give up and proceed as a yes
-      setTimeout(()=>{burst();show('s2');},450);
-    }
+    blip(300+n*40,0.07,'square',0.1);
+    yesBtn.style.transform=`scale(${1+Math.min(n,6)*0.16})`;
+    noBtn.textContent=noLines[Math.min(n,noLines.length-1)];
+    s1sub.textContent = n>=4 ? 'the No button works for me now btw 💅' : 'not a question. but tap one anyway 🌹';
+    if(n>=noLines.length-1){setTimeout(()=>{burst();show('s2');},450);}
   }
   noBtn.addEventListener('click',refuseNo);
   yesBtn.addEventListener('click',()=>{burst();show('s2');});
 
-  /* ---- SCREEN 2: date type ---- */
-  let pickedType=null;
-  const toCal=document.getElementById('toCal');
+  /* ---- SCREEN 2: vibe + reactions ---- */
+  let pickedType=null,pickedIc='💘';
+  const toCal=document.getElementById('toCal'),reaction=document.getElementById('reaction');
+  const reactions={
+    "Food 🍝":"a person who eats? marry me. 🍝",
+    "Movie 🍿":"cute. fair warning, I will hold your hand during the scary part 🍿",
+    "Hiking 🥾":"outdoorsy, respect. I'll pretend I'm not dying the whole time 🥾",
+    "Coffee ☕":"low stakes, high charm. classic me energy ☕",
+    "Beach 🌊":"so you've SEEN me in the sun. bold. I approve 🌊",
+    "Surprise 🎁":"trusting me already? dangerous. I love it 🎁"
+  };
   document.querySelectorAll('.date-opt').forEach(o=>{
     o.addEventListener('click',()=>{
       document.querySelectorAll('.date-opt').forEach(x=>x.classList.remove('sel'));
-      o.classList.add('sel');
-      pickedType=o.dataset.t;
+      o.classList.add('sel');pickedType=o.dataset.t;pickedIc=o.dataset.ic;
+      blip(660,0.1,'sine',0.12);
+      reaction.textContent=reactions[pickedType];
       toCal.style.opacity=1;toCal.style.pointerEvents='auto';
     });
   });
   toCal.addEventListener('click',()=>{buildCal();show('s3');});
 
   /* ---- SCREEN 3: calendar ---- */
-  const monthLbl=document.getElementById('monthLbl');
-  const daysEl=document.getElementById('days');
-  const calHint=document.getElementById('calHint');
-  const lockIn=document.getElementById('lockIn');
+  const monthLbl=document.getElementById('monthLbl'),daysEl=document.getElementById('days'),calHint=document.getElementById('calHint'),lockIn=document.getElementById('lockIn');
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const flirts=["ooh good choice 😌","clearing my whole day 🗓️","it's giving main character ✨","already nervous lol","perfect, wear something cute 👀"];
-  let view=new Date(); view.setDate(1);
-  let pickedDate=null;
-  const today=new Date(); today.setHours(0,0,0,0);
-
+  const flirts=["bold choice. I'm clearing my calendar 🗓️","that day's gonna be legendary ✨","already nervous, won't admit it 😅","perfect. wear something cute 👀","mark it. no take-backs 🔒"];
+  let view=new Date();view.setDate(1);let pickedDate=null;
+  const today=new Date();today.setHours(0,0,0,0);
   function buildCal(){
-    daysEl.innerHTML='';
-    const y=view.getFullYear(), m=view.getMonth();
-    monthLbl.textContent=months[m]+' '+y;
-    const first=new Date(y,m,1).getDay();
-    const total=new Date(y,m+1,0).getDate();
+    daysEl.innerHTML='';const y=view.getFullYear(),m=view.getMonth();monthLbl.textContent=months[m]+' '+y;
+    const first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate();
     for(let i=0;i<first;i++){const d=document.createElement('div');d.className='day empty';daysEl.appendChild(d);}
     for(let d=1;d<=total;d++){
-      const cell=document.createElement('div');
-      cell.className='day';cell.textContent=d;
+      const cell=document.createElement('div');cell.className='day';cell.textContent=d;
       const thisDate=new Date(y,m,d);
       if(thisDate<today){cell.classList.add('past');}
-      else{
-        cell.addEventListener('click',()=>{
-          document.querySelectorAll('.day').forEach(x=>x.classList.remove('sel'));
-          cell.classList.add('sel');
-          pickedDate=`${months[m]} ${d}, ${y}`;
-          calHint.textContent=flirts[Math.floor(Math.random()*flirts.length)];
-          lockIn.style.opacity=1;lockIn.style.pointerEvents='auto';
-        });
-      }
+      else{cell.addEventListener('click',()=>{
+        document.querySelectorAll('.day').forEach(x=>x.classList.remove('sel'));cell.classList.add('sel');
+        pickedDate=`${months[m]} ${d}, ${y}`;
+        calHint.textContent=flirts[Math.floor(Math.random()*flirts.length)];
+        lockIn.style.opacity=1;lockIn.style.pointerEvents='auto';
+      });}
       daysEl.appendChild(cell);
     }
   }
-  document.getElementById('prevM').addEventListener('click',()=>{
-    const c=new Date(); c.setDate(1);
-    if(view.getFullYear()===c.getFullYear()&&view.getMonth()===c.getMonth())return;
-    view.setMonth(view.getMonth()-1);buildCal();
-  });
+  document.getElementById('prevM').addEventListener('click',()=>{const c=new Date();c.setDate(1);if(view.getFullYear()===c.getFullYear()&&view.getMonth()===c.getMonth())return;view.setMonth(view.getMonth()-1);buildCal();});
   document.getElementById('nextM').addEventListener('click',()=>{view.setMonth(view.getMonth()+1);buildCal();});
-  lockIn.addEventListener('click',()=>{
-    document.getElementById('recap').innerHTML=`<span>${pickedType}</span><br>on<br><span>${pickedDate}</span>`;
-    burst();show('s4');
 
-    // send her answer to your Google Sheet (if a URL is set)
-    if(SAVE_URL){
-      fetch(SAVE_URL,{
-        method:'POST',
-        mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({
-          dateType: pickedType,
-          dateDay: pickedDate,
-          gaveUpOnNo: n   // how many times she tried to say No 😏
-        })
-      }).catch(err=>console.log('save failed (page still works fine):',err));
-    }
+  /* ---- SCREEN 4: itinerary ---- */
+  const itin=document.getElementById('itin'),itinNext=document.getElementById('itinNext'),itinSub=document.getElementById('itinSub');
+  const plans={
+    "Food 🍝":[["7:00","I pick you up looking unfairly good 😎"],["7:30","Dinner somewhere with candles & questionable amounts of garlic 🍝"],["9:00","You laugh at my joke. It's over for you. 💘"],["9:30","'One more drink?' (the answer is yes)"]],
+    "Movie 🍿":[["6:30","I show up with snacks you didn't ask for 🍿"],["7:00","Movie. I 'accidentally' do the yawn-arm thing 😏"],["9:00","We argue about the ending. It's adorable."],["9:30","Ice cream debrief 🍦"]],
+    "Hiking 🥾":[["8:00","Sunrise trail. Yes it's early. Worth it. 🌄"],["9:30","I pretend the view is why I'm out of breath 🥾"],["11:00","Summit selfie that goes hard 📸"],["12:00","Tacos. You've earned them. 🌮"]],
+    "Coffee ☕":[["10:00","Cute café. I order something I can't pronounce ☕"],["10:30","We talk for 3 hours and don't notice ⏳"],["1:00","'Wanna keep going?' — a walk appears 🚶"],["2:00","I'm already planning date two 😌"]],
+    "Beach 🌊":[["4:00","Beach, golden hour, main-character energy 🌊"],["5:00","I lose at beach volleyball on purpose (maybe) 🏐"],["6:30","Sunset. I get quiet. It's a moment. 🌅"],["7:30","Fries on the pier 🍟"]],
+    "Surprise 🎁":[["??:??","I tell you 'wear comfy shoes' and nothing else 👟"],["??:??","Plot twist #1 🎁"],["??:??","Plot twist #2 (you're smiling, I saw it)"],["??:??","You admit it was a great idea. I stay humble. 😇"]]
+  };
+  function buildItinerary(){
+    itin.innerHTML='';
+    const rows=plans[pickedType]||plans["Surprise 🎁"];
+    rows.forEach((r,i)=>{
+      const div=document.createElement('div');div.className='row';div.style.animationDelay=(i*0.5+0.3)+'s';
+      div.innerHTML=`<div class="t">${r[0]}</div><div class="d">${r[1]}</div>`;
+      itin.appendChild(div);
+    });
+    setTimeout(()=>{itinSub.textContent="...nailed it. look at this masterpiece 😌";itinNext.style.display='inline-block';},rows.length*500+700);
+  }
+  lockIn.addEventListener('click',()=>{show('s4');buildItinerary();});
+
+  let saved=false;
+  function saveAll(line){
+    if(saved||!SAVE_URL)return;
+    saved=true;
+    fetch(SAVE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({dateType:pickedType,dateDay:pickedDate,gaveUpOnNo:n,oneLiner:line||''})
+    }).catch(err=>console.log('save failed (page still works):',err));
+  }
+
+  itinNext.addEventListener('click',()=>{
+    document.getElementById('recap').innerHTML=`<span>${pickedType}</span><br>on<br><span>${pickedDate}</span>`;
+    burst();fanfare();show('s5');
   });
+
+  const sendLine=document.getElementById('sendLine'),oneLinerEl=document.getElementById('oneLiner'),lineThanks=document.getElementById('lineThanks');
+  sendLine.addEventListener('click',()=>{
+    const line=oneLinerEl.value.trim();
+    saveAll(line);
+    blip(880,0.12,'sine',0.13);
+    lineThanks.textContent = line ? "oh that's GOOD. okay see you soon 😏💕" : "strong silent type. respect. see you soon 😏";
+    oneLinerEl.disabled=true;sendLine.disabled=true;sendLine.style.opacity=0.6;sendLine.textContent="sent ✅";
+    burst();
+  });
+  // safety net: if she closes without sending a line, still save the rest after a bit
+  window.addEventListener('beforeunload',()=>{ if(document.getElementById('s5').classList.contains('active')) saveAll(''); });
+
 </script>
 </body>
 </html>
