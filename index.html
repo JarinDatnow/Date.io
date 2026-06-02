@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Very Important Question 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ff6f9c;
+    --deep:#e63e74;
+    --cream:#fff5f8;
+    --soft:#ffe1ec;
+    --ink:#5a2740;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:'Quicksand',sans-serif;
+    background:
+      radial-gradient(circle at 20% 20%, #ffd9e6 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, #ffe7c2 0%, transparent 45%),
+      linear-gradient(135deg, #fff5f8 0%, #ffe1ec 100%);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+    position:relative;
+    text-align:center;
+    padding:20px;
+  }
+
+  .heart-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .heart-bg span{position:absolute;bottom:-40px;font-size:24px;opacity:.5;animation:float linear infinite}
+  @keyframes float{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+
+  .screen{display:none;position:relative;z-index:2;width:100%;max-width:540px}
+  .screen.active{display:block;animation:pop .6s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+
+  .card{
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(8px);
+    border:3px solid #fff;
+    border-radius:32px;
+    padding:44px 32px 52px;
+    box-shadow:0 24px 60px rgba(230,62,116,.25);
+  }
+
+  .emoji-top{font-size:64px;animation:beat 1.2s ease-in-out infinite}
+  @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+  h1{font-family:'Caveat',cursive;font-size:clamp(40px,8vw,66px);color:var(--deep);line-height:1.05;margin:10px 0 6px}
+  .sub{font-size:17px;font-weight:600;color:var(--pink);margin-bottom:30px}
+
+  .btns{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
+
+  button{font-family:'Quicksand',sans-serif;font-weight:700;border:none;cursor:pointer;border-radius:50px;font-size:18px;transition:transform .15s ease, box-shadow .15s ease}
+  .yes{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff;padding:16px 38px;box-shadow:0 10px 24px rgba(230,62,116,.45)}
+  .yes:hover{transform:translateY(-3px) scale(1.04)}
+  .no{background:#fff;color:var(--pink);border:2px solid var(--soft);padding:16px 30px}
+
+  /* date type grid */
+  .date-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:26px 0}
+  .date-opt{
+    background:#fff;border:2px solid var(--soft);border-radius:22px;
+    padding:22px 12px;cursor:pointer;transition:all .18s ease;
+    font-weight:700;font-size:16px;color:var(--ink);
+  }
+  .date-opt .ic{display:block;font-size:38px;margin-bottom:8px}
+  .date-opt:hover{transform:translateY(-4px)}
+  .date-opt.sel{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff;border-color:transparent;box-shadow:0 12px 26px rgba(230,62,116,.4)}
+
+  /* calendar */
+  .cal{background:#fff;border-radius:22px;padding:18px;margin:22px 0;border:2px solid var(--soft)}
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:700;color:var(--deep)}
+  .cal-head button{background:var(--soft);color:var(--deep);padding:6px 14px;font-size:16px;border-radius:12px}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;font-weight:700;color:var(--pink);margin-bottom:6px}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;transition:all .12s ease}
+  .day.empty{cursor:default}
+  .day.past{opacity:.25;cursor:not-allowed}
+  .day:not(.empty):not(.past):hover{background:var(--soft)}
+  .day.sel{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff}
+
+  .hint{font-size:14px;font-weight:600;color:var(--pink);min-height:20px;margin-bottom:8px}
+
+  .win p{font-size:19px;font-weight:600;margin-top:10px;line-height:1.5}
+  .recap{background:#fff;border-radius:20px;padding:20px;margin:20px 0;border:2px solid var(--soft);font-size:18px;font-weight:700;color:var(--ink)}
+  .recap span{color:var(--deep)}
+</style>
+</head>
+<body>
+  <div class="heart-bg" id="heartBg"></div>
+
+  <!-- SCREEN 1: the question -->
+  <div class="screen active" id="s1">
+    <div class="card">
+      <div class="emoji-top">🥺</div>
+      <h1>Will you go<br>out with me?</h1>
+      <p class="sub" id="s1sub">no pressure but also... please 🌸</p>
+      <div class="btns">
+        <button class="yes" id="yesBtn">Yes 💕</button>
+        <button class="no" id="noBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: pick a date type -->
+  <div class="screen" id="s2">
+    <div class="card">
+      <div class="emoji-top">😎</div>
+      <h1>Knew it.</h1>
+      <p class="sub">okay okay — what's the vibe?</p>
+      <div class="date-grid" id="typeGrid">
+        <div class="date-opt" data-t="Food 🍝"><span class="ic">🍝</span>Food</div>
+        <div class="date-opt" data-t="Movie 🍿"><span class="ic">🍿</span>Movie</div>
+        <div class="date-opt" data-t="Hiking 🥾"><span class="ic">🥾</span>Hiking</div>
+        <div class="date-opt" data-t="Coffee ☕"><span class="ic">☕</span>Coffee</div>
+        <div class="date-opt" data-t="Beach 🌊"><span class="ic">🌊</span>Beach</div>
+        <div class="date-opt" data-t="Surprise 🎁"><span class="ic">🎁</span>Surprise me</div>
+      </div>
+      <button class="yes" id="toCal" style="opacity:.5;pointer-events:none">Pick a day →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: calendar -->
+  <div class="screen" id="s3">
+    <div class="card">
+      <div class="emoji-top">📅</div>
+      <h1>When?</h1>
+      <p class="sub">tap a day. clear your schedule btw.</p>
+      <div class="cal">
+        <div class="cal-head">
+          <button id="prevM">‹</button>
+          <span id="monthLbl"></span>
+          <button id="nextM">›</button>
+        </div>
+        <div class="dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
+        <div class="days" id="days"></div>
+      </div>
+      <p class="hint" id="calHint"></p>
+      <button class="yes" id="lockIn" style="opacity:.5;pointer-events:none">Lock it in 🔒</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: win -->
+  <div class="screen" id="s4">
+    <div class="card win">
+      <div class="emoji-top">🎉</div>
+      <h1>It's a date!</h1>
+      <div class="recap" id="recap"></div>
+      <p>screenshot this as proof. no take-backs 😌💍</p>
+    </div>
+  </div>
+
+<script>
+  /* ===================================================================
+     👇 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES 👇
+     (looks like https://script.google.com/macros/s/AKfy..../exec)
+     Leave it as "" to just run offline with no saving.
+  ==================================================================== */
+  const SAVE_URL = "https://script.google.com/macros/s/AKfycbzENvlIHE67RVnzqpGzEr9rv6EjUDTjh9gUO2CrURjiuJAbTbKVmWwQ9ROE0s4Qg8K2/exec";
+  /* ==================================================================== */
+
+  const hearts=['💖','💕','🌸','💗','✨','💘','🥰'];
+  const bg=document.getElementById('heartBg');
+  for(let i=0;i<22;i++){
+    const s=document.createElement('span');
+    s.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+    s.style.left=Math.random()*100+'%';
+    s.style.fontSize=(16+Math.random()*28)+'px';
+    s.style.animationDuration=(6+Math.random()*8)+'s';
+    s.style.animationDelay=(Math.random()*8)+'s';
+    bg.appendChild(s);
+  }
+  function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+  function burst(){for(let i=0;i<36;i++){const s=document.createElement('span');s.textContent=hearts[Math.floor(Math.random()*hearts.length)];s.style.position='fixed';s.style.left='50%';s.style.top='50%';s.style.fontSize=(20+Math.random()*30)+'px';s.style.zIndex=20;s.style.transition='all 1.4s ease-out';document.body.appendChild(s);requestAnimationFrame(()=>{s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.opacity=0;});setTimeout(()=>s.remove(),1500);}}
+
+  /* ---- SCREEN 1: No that means yes ---- */
+  const noBtn=document.getElementById('noBtn');
+  const yesBtn=document.getElementById('yesBtn');
+  const s1sub=document.getElementById('s1sub');
+  const noLines=['No','are you sure? 👀','wrong button 🙃','that one also means yes','nice try 😏','it literally won\'t work','just press Yes 😭','okay this is awkward','😤 fine. that\'s a yes too'];
+  let n=0;
+  function refuseNo(){
+    n++;
+    yesBtn.style.transform=`scale(${1+Math.min(n,6)*0.14})`;
+    noBtn.textContent = noLines[Math.min(n,noLines.length-1)];
+    s1sub.textContent = n>=4 ? 'the No button is on my side btw 💅' : 'no pressure but also... please 🌸';
+    if(n>=noLines.length-1){ // give up and proceed as a yes
+      setTimeout(()=>{burst();show('s2');},450);
+    }
+  }
+  noBtn.addEventListener('click',refuseNo);
+  yesBtn.addEventListener('click',()=>{burst();show('s2');});
+
+  /* ---- SCREEN 2: date type ---- */
+  let pickedType=null;
+  const toCal=document.getElementById('toCal');
+  document.querySelectorAll('.date-opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      document.querySelectorAll('.date-opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel');
+      pickedType=o.dataset.t;
+      toCal.style.opacity=1;toCal.style.pointerEvents='auto';
+    });
+  });
+  toCal.addEventListener('click',()=>{buildCal();show('s3');});
+
+  /* ---- SCREEN 3: calendar ---- */
+  const monthLbl=document.getElementById('monthLbl');
+  const daysEl=document.getElementById('days');
+  const calHint=document.getElementById('calHint');
+  const lockIn=document.getElementById('lockIn');
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const flirts=["ooh good choice 😌","clearing my whole day 🗓️","it's giving main character ✨","already nervous lol","perfect, wear something cute 👀"];
+  let view=new Date(); view.setDate(1);
+  let pickedDate=null;
+  const today=new Date(); today.setHours(0,0,0,0);
+
+  function buildCal(){
+    daysEl.innerHTML='';
+    const y=view.getFullYear(), m=view.getMonth();
+    monthLbl.textContent=months[m]+' '+y;
+    const first=new Date(y,m,1).getDay();
+    const total=new Date(y,m+1,0).getDate();
+    for(let i=0;i<first;i++){const d=document.createElement('div');d.className='day empty';daysEl.appendChild(d);}
+    for(let d=1;d<=total;d++){
+      const cell=document.createElement('div');
+      cell.className='day';cell.textContent=d;
+      const thisDate=new Date(y,m,d);
+      if(thisDate<today){cell.classList.add('past');}
+      else{
+        cell.addEventListener('click',()=>{
+          document.querySelectorAll('.day').forEach(x=>x.classList.remove('sel'));
+          cell.classList.add('sel');
+          pickedDate=`${months[m]} ${d}, ${y}`;
+          calHint.textContent=flirts[Math.floor(Math.random()*flirts.length)];
+          lockIn.style.opacity=1;lockIn.style.pointerEvents='auto';
+        });
+      }
+      daysEl.appendChild(cell);
+    }
+  }
+  document.getElementById('prevM').addEventListener('click',()=>{
+    const c=new Date(); c.setDate(1);
+    if(view.getFullYear()===c.getFullYear()&&view.getMonth()===c.getMonth())return;
+    view.setMonth(view.getMonth()-1);buildCal();
+  });
+  document.getElementById('nextM').addEventListener('click',()=>{view.setMonth(view.getMonth()+1);buildCal();});
+  lockIn.addEventListener('click',()=>{
+    document.getElementById('recap').innerHTML=`<span>${pickedType}</span><br>on<br><span>${pickedDate}</span>`;
+    burst();show('s4');
+
+    // send her answer to your Google Sheet (if a URL is set)
+    if(SAVE_URL){
+      fetch(SAVE_URL,{
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({
+          dateType: pickedType,
+          dateDay: pickedDate,
+          gaveUpOnNo: n   // how many times she tried to say No 😏
+        })
+      }).catch(err=>console.log('save failed (page still works fine):',err));
+    }
+  });
+</script>
+</body>
+</html>
